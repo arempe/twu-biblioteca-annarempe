@@ -9,8 +9,8 @@ public class BibliotecaApp {
 
     protected BibliotecaApp(){
         book_inv = new ArrayList<Book>();
-        book_inv.add(new Book("The Name of the Wind"));
-        book_inv.add(new Book("milk and honey"));
+        book_inv.add(new Book("The Name of the Wind", "Patrick Rothfuss", 2007));
+        book_inv.add(new Book("Milk and Honey", "Rupi Kaur", 2015));
     }
 
     public static void main(String[] args) {
@@ -29,8 +29,8 @@ public class BibliotecaApp {
     }
 
     private void displayBookInventory(){
+        System.out.printf("\t%-20s\t%-20s\t%-5s\n", "Title", "Author", "Year");
         int i = 0;
-        System.out.println("\tTitle");
         for(Book book: this.book_inv){
             i++;
             System.out.printf("%d)\t", i);

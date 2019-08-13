@@ -52,7 +52,7 @@ public class BibliotecaApp {
                 displayBookInventory();
             }
             else{//invalid input
-                System.out.println("Please enter a valid selection");
+                System.out.println("Please select a valid option!");
             }
             displayMenu();
             selection = user_input.nextInt();

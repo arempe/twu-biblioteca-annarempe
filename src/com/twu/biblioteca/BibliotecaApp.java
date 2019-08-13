@@ -36,7 +36,7 @@ public class BibliotecaApp {
                 "You're one-stop-shop for great book titles in Bangalore!");
     }
 
-    private void onRun(){
+    protected void onRun(){
         displayWelcomeMsg();
         openMenu();
     }
@@ -60,22 +60,38 @@ public class BibliotecaApp {
         System.out.println("Thanks for using Biblioteca!");
     }
 
-    private void displayBookInventory(){
-        System.out.printf("\t%-20s\t%-20s\t%-5s\n", "Title", "Author", "Year");
+    protected void printInventory(){
         int i = 0;
         for(Book book: this.book_inv){
-            i++;
-            System.out.printf("%d)\t", i);
-            book.printBook();
+            if(book.getStatus()){
+                i++;
+                System.out.printf("%d)\t", i);
+                book.printBook();
+            }
         }
     }
-    
+
+    private void displayBookInventory(){
+        System.out.printf("\t%-20s\t%-20s\t%-5s\n", "Title", "Author", "Year");
+        printInventory();
+    }
+
     private void displayMenu(){
         System.out.print("\nPlease select from the following options\n");
         int i = 0;
         for(String menu_opt: this.menu_opt){
             i++;
             System.out.printf("%d)\t%s\n", i, menu_opt);
+        }
+    }
+
+    public void checkOutBook(int ind){
+        Book to_check_out = this.book_inv.get(ind);
+        if(to_check_out.getStatus()) {
+            to_check_out.setStatus(false);
+        }
+        else{
+            System.out.println("Book is not available");
         }
     }
 }

@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class BibliotecaApp {
 
-    private ArrayList<Book> book_inv;
+    private BookInventory book_inv;
     private ArrayList<String> menu_opt;
 
     protected BibliotecaApp(){
@@ -17,13 +17,12 @@ public class BibliotecaApp {
     private void setupMenu() {
         this.menu_opt = new ArrayList<String>();
         this.menu_opt.add("List of books");
+        this.menu_opt.add("Checkout book");
         this.menu_opt.add("Quit");
     }
 
     private void setupBookInv() {
-        this.book_inv = new ArrayList<Book>();
-        this.book_inv.add(new Book("The Name of the Wind", "Patrick Rothfuss", 2007));
-        this.book_inv.add(new Book("Milk and Honey", "Rupi Kaur", 2015));
+        this.book_inv = new BookInventory();
     }
 
     public static void main(String[] args) {
@@ -49,7 +48,10 @@ public class BibliotecaApp {
 
         while(selection != this.menu_opt.size()){
             if(selection == 1){
-                displayBookInventory();
+                displayBookInv();
+            }
+            else if(selection == 2){
+                checkOutBook();
             }
             else{//invalid input
                 System.out.println("Please select a valid option!");
@@ -57,24 +59,32 @@ public class BibliotecaApp {
             displayMenu();
             selection = user_input.nextInt();
         }
-        System.out.println("Thanks for using Biblioteca!");
+        onQuit();
     }
 
-    protected void printInventory(){
-        int i = 0;
-        for(Book book: this.book_inv){
-            if(book.getStatus()){
-                i++;
-                System.out.printf("%d)\t", i);
-                book.printBook();
-            }
+    private void checkOutBook() {
+        System.out.println("\nPlease select the number next to the book you want to checkout");
+        displayBookInv();
+        System.out.printf("%d)\tBack\n", this.book_inv.getNumCheckedIn() + 1);
+
+        Scanner user_input = new Scanner(System.in);
+        int selection = user_input.nextInt();
+
+        if(selection == this.book_inv.getNumCheckedIn() + 1){
+            openMenu();
+        }
+        else if(selection < 1 || selection > this.book_inv.getNumCheckedIn()){
+            System.out.println("Please enter a valid option");
+        }
+        else{
+            checkOutBook(selection);
         }
     }
 
-    private void displayBookInventory(){
-        System.out.printf("\t%-20s\t%-20s\t%-5s\n", "Title", "Author", "Year");
-        printInventory();
+    protected void checkOutBook(Integer selection) {
+        this.book_inv.checkOutBook(selection);
     }
+
 
     private void displayMenu(){
         System.out.print("\nPlease select from the following options\n");
@@ -85,13 +95,14 @@ public class BibliotecaApp {
         }
     }
 
-    public void checkOutBook(int ind){
-        Book to_check_out = this.book_inv.get(ind);
-        if(to_check_out.getStatus()) {
-            to_check_out.setStatus(false);
-        }
-        else{
-            System.out.println("Book is not available");
-        }
+    protected void displayBookInv(){
+        this.book_inv.displayBookInventory();
     }
+
+    private void onQuit(){
+        System.out.println("Thanks for using Biblioteca!");
+        System.exit(0);
+    }
+
+
 }

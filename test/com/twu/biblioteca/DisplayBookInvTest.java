@@ -24,9 +24,10 @@ public class DisplayBookInvTest {
 
     @Test
     public void displayCheckedInBooks(){
-        b1.checkOutBook(0);
-        b1.printInventory();
-        String expected_string = String.format("1)\t%-20s\t%-20s\t%-5d\n", "Milk and Honey", "Rupi Kaur", 2015);
+        b1.checkOutBook(1);
+        b1.displayBookInv();
+
+        String expected_string = String.format("\t%-20s\t%-20s\t%-5s\n1)\t%-20s\t%-20s\t%-5d\n", "Title", "Author", "Year", "Milk and Honey", "Rupi Kaur", 2015);
         assertEquals(expected_string, outContent.toString());
 
 

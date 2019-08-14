@@ -52,6 +52,7 @@ public class BibliotecaApp {
             }
             else if(selection == 2){
                 checkOutBook();
+                System.out.println("Thank you! Enjoy the book");
             }
             else{//invalid input
                 System.out.println("Please select a valid option!");

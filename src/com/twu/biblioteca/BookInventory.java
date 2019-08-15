@@ -8,6 +8,8 @@ public class BookInventory {
     private ArrayList<Book> book_inv;
     private PrintStream out;
 
+    private String inv_header_msg = String.format("\t%-20s\t%-20s\t%-5s\n", "Title", "Author", "Year");
+
 
     public BookInventory(PrintStream out){
         this.out = out;
@@ -35,18 +37,12 @@ public class BookInventory {
     }
 
     protected void printCheckedInBooks(){
-        int i = 0;
-        for(Book book: this.book_inv){
-            if(book.getStatus()){
-                i++;
-                this.out.printf("%d)\t", i);
-                this.out.println(book.toString());
-            }
-        }
+        this.out.print(checkedinToString());
+
     }
 
     protected void displayBookInventory(){
-        this.out.printf("\t%-20s\t%-20s\t%-5s\n", "Title", "Author", "Year");
+        this.out.print(this.inv_header_msg);
         printCheckedInBooks();
     }
 
@@ -74,4 +70,24 @@ public class BookInventory {
     public int getNumCheckedIn() {
         return this.num_checked_in;
     }
+
+    public String checkedinToString(){
+        StringBuilder checkedin_books = new StringBuilder("");
+
+        int i = 0;
+        for(Book book: this.book_inv){
+            if(book.getStatus()){
+                i++;
+                checkedin_books.append(String.format("%d)\t", i));
+                checkedin_books.append(book.toString());
+                checkedin_books.append("\n");
+            }
+        }
+        return String.valueOf(checkedin_books);
+    }
+
+    public String getInvHeaderMsg(){
+        return this.inv_header_msg;
+    }
+
 }

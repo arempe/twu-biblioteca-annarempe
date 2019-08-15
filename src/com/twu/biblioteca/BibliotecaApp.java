@@ -13,7 +13,9 @@ public class BibliotecaApp {
     private InputWrapper in_wrap;
 
     // msgs
-    private String invalid_option = "Please select a valid option!\n";
+    private String invalid_option_msg = "Please select a valid option!\n";
+    private String quit_msg = "Thank you for using BibliotecaApp!\n";
+    private String check_out_header_msg = "Please select the number next to the book you want to checkout\n";
 
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
@@ -83,7 +85,7 @@ public class BibliotecaApp {
                 checkInBook();
             }
             else{//invalid input
-                this.out.print(this.invalid_option);
+                this.out.print(this.invalid_option_msg);
             }
             displayMenu();
             selection = this.in_wrap.getInt();
@@ -99,7 +101,7 @@ public class BibliotecaApp {
     }
 
     private void checkOutBook() {
-        this.out.println("\nPlease select the number next to the book you want to checkout");
+        this.out.print(this.check_out_header_msg);
         displayBookInv();
         this.out.printf("%d)\tBack\n", this.book_inv.getNumCheckedIn() + 1);
 
@@ -122,7 +124,7 @@ public class BibliotecaApp {
     }
 
     private void displayMenu(){
-        this.out.print(this.menuToString());
+        this.out.println(this.menuToString());
     }
 
     public void displayBookInv(){
@@ -130,14 +132,21 @@ public class BibliotecaApp {
     }
 
     private void onQuit(){
-        this.out.println(displayQuitMsg());
+        this.out.print(this.quit_msg);
     }
 
-    protected String displayQuitMsg(){
-        return "\nThanks for using Biblioteca!";
+    protected String getQuitMsg(){
+        return this.quit_msg;
     }
 
     public String getInvalidMsg() {
-        return this.invalid_option;
+        return this.invalid_option_msg;
+    }
+    public String getCheckOutMsg(){
+        return this.check_out_header_msg;
+    }
+
+    public String getInvHeader() {
+        return this.book_inv.getInvHeaderMsg();
     }
 }

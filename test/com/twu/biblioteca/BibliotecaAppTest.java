@@ -2,10 +2,7 @@ package com.twu.biblioteca;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-
-import org.junit.rules.TestRule;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -15,7 +12,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class BibliotecaAppTest {
     private BibliotecaApp biblioteca_app;
@@ -60,7 +56,7 @@ public class BibliotecaAppTest {
 
         biblioteca_app.openMenu();
 
-        String expected_str = biblioteca_app.menuToString() + biblioteca_app.displayQuitMsg() + "\n";
+        String expected_str = biblioteca_app.menuToString() + biblioteca_app.getQuitMsg() + "\n";
 
         assertThat(output_stream.toString(), is(expected_str));
     }
@@ -81,7 +77,7 @@ public class BibliotecaAppTest {
                         "\t%-20s\t%-20s\t%-5s\n" + "1)\t"
                         + this.b1.toString() + "\n2)\t" + this.b3.toString() + "\n"
                         + biblioteca_app.menuToString()
-                        + biblioteca_app.displayQuitMsg() + "\n",
+                        + biblioteca_app.getQuitMsg() + "\n",
                 "Title", "Author", "Year");
 
         assertThat(output_stream.toString(), is(expected_str));
@@ -99,8 +95,13 @@ public class BibliotecaAppTest {
 
         biblioteca_app.openMenu();
         String expected_str = String.format(
-                biblioteca_app.getInvalidMsg()
+                biblioteca_app.menuToString() +
+                        "\n" + biblioteca_app.getInvalidMsg() +
+                        biblioteca_app.menuToString() +
+                        "\n" + biblioteca_app.getQuitMsg()
         );
+
+        assertThat(output_stream.toString(), is(expected_str));
     }
 
     @Test
@@ -109,6 +110,26 @@ public class BibliotecaAppTest {
 
     @Test
     public void testCheckOutBook() {
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+        when(input_wrapper_mock.getInt()).thenReturn(2, 1, 1, 4);
+
+        biblioteca_app.openMenu();
+        String expected_str = String.format(
+                biblioteca_app.menuToString() + "\n"
+                + biblioteca_app.getCheckOutMsg()
+                + biblioteca_app.getInvHeader()
+                + b1.toString() + "\n"
+                + b3.toString() + "\n"
+
+                + biblioteca_app.menuToString() + "\n"
+                + biblioteca_app.getQuitMsg()
+        );
+        assertThat(output_stream.toString(), is(expected_str));
     }
 
     @Test

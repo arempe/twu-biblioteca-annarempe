@@ -88,6 +88,22 @@ public class BibliotecaAppTest {
     }
 
     @Test
+    public void testSelectInvalidMenuOpt(){
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+        when(input_wrapper_mock.getInt()).thenReturn(-1, 4);
+
+        biblioteca_app.openMenu();
+        String expected_str = String.format(
+                biblioteca_app.getInvalidMsg()
+        );
+    }
+
+    @Test
     public void testCheckInBook() {
     }
 

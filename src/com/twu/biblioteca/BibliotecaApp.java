@@ -12,12 +12,23 @@ public class BibliotecaApp {
     private PrintStream out;
     private InputWrapper in_wrap;
 
+    // msgs
+    private String invalid_option = "Please select a valid option!\n";
+
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
         this.in_wrap = in_wrap;
         setupMenu();
         setupBookInv();
 
+    }
+
+    public static void main(String[] args) {
+        PrintStream out = new PrintStream(System.out);
+        InputWrapper input_wrapper = new InputWrapper();
+        BibliotecaApp biblioteca_app = new BibliotecaApp(out, input_wrapper);
+        biblioteca_app.onRun();
+        biblioteca_app.openMenu();
     }
 
     private void setupMenu() {
@@ -31,25 +42,15 @@ public class BibliotecaApp {
 
 
     public String menuToString(){
-        String to_return;
-        to_return = "\nPlease select from the following options\n";
+        StringBuilder to_return;
+        to_return = new StringBuilder("\nPlease select from the following options\n");
         int i = 0;
         for(String menu_opt: this.menu_opt){
             i++;
-            to_return += String.format("%d)\t%s\n", i, menu_opt);
+            to_return.append(String.format("%d)\t%s\n", i, menu_opt));
         }
-        return to_return;
+        return to_return.toString();
     }
-
-    public static void main(String[] args) {
-        PrintStream out = new PrintStream(System.out);
-        InputWrapper input_wrapper = new InputWrapper();
-        BibliotecaApp biblioteca_app = new BibliotecaApp(out, input_wrapper);
-        biblioteca_app.onRun();
-        biblioteca_app.openMenu();
-    }
-
-
 
     private void setupBookInv() {
         this.book_inv = new BookInventory(this.out);
@@ -62,15 +63,15 @@ public class BibliotecaApp {
 
     protected void onRun(){
         displayWelcomeMsg();
-       // openMenu();
     }
 
-    protected void openMenu() {
-        int selection = -1;
+    protected  void openMenu(){
+        displayMenu();
+        int selection = this.in_wrap.getInt();
+        openMenu(selection);
+    }
+    protected void openMenu(int selection) {
         while(selection != this.quit_opt){
-            displayMenu();
-            selection = this.in_wrap.getInt();
-
             if(selection == 1){
                 displayBookInv();
             }
@@ -81,14 +82,13 @@ public class BibliotecaApp {
             else if(selection == 3){
                 checkInBook();
             }
-            else if(selection == this.quit_opt){
-                onQuit();
-                break;
-            }
             else{//invalid input
-                this.out.println("Please select a valid option!");
+                this.out.print(this.invalid_option);
             }
+            displayMenu();
+            selection = this.in_wrap.getInt();
         }
+        onQuit();
     }
 
     private void checkInBook() {
@@ -106,7 +106,7 @@ public class BibliotecaApp {
         int selection = this.in_wrap.getInt();
 
         if(selection == this.book_inv.getNumCheckedIn() + 1){
-            openMenu();
+            //return to menu
         }
         else if(selection < 1 || selection > this.book_inv.getNumCheckedIn()){
             this.out.println("Sorry, that book is not available");
@@ -120,7 +120,6 @@ public class BibliotecaApp {
     protected void checkOutBook(Integer selection) {
         this.book_inv.checkOutBook(selection);
     }
-
 
     private void displayMenu(){
         this.out.print(this.menuToString());
@@ -138,5 +137,7 @@ public class BibliotecaApp {
         return "\nThanks for using Biblioteca!";
     }
 
-
+    public String getInvalidMsg() {
+        return this.invalid_option;
+    }
 }

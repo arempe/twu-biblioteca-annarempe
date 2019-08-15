@@ -2,7 +2,10 @@ package com.twu.biblioteca;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import org.junit.rules.TestRule;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -16,7 +19,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class BibliotecaAppTest {
     private BibliotecaApp biblioteca_app;
-    Book b1, b2, b3;
+    private Book b1, b2, b3;
 
     @Before
     public void setUp() {
@@ -57,23 +60,14 @@ public class BibliotecaAppTest {
         when(input_wrapper_mock.getInt()).thenReturn(1, 4);
 
         biblioteca_app.openMenu();
-        String expected_str = String.format("\n" +
-                        "Please select from the following options\n" +
-                        "1)\tList of books\n" +
-                        "2)\tCheckout book\n" +
-                        "3)\tCheck-in book\n" +
-                        "4)\tQuit\n" +
+        String expected_str = String.format(
+                        biblioteca_app.menuToString() +
                         "\t%-20s\t%-20s\t%-5s\n" + "1)\t"
-                        + this.b1.toString() + "\n2)\t" + this.b3.toString() + "\n\nPlease select from the following options\n" +
-                        "1)\tList of books\n" +
-                        "2)\tCheckout book\n" +
-                        "3)\tCheck-in book\n" +
-                        "4)\tQuit\n" +
-
+                        + this.b1.toString() + "\n2)\t" + this.b3.toString() + "\n"
+                        + biblioteca_app.menuToString() +
                         "Thanks for using Biblioteca!\n",
-                "Title", "Author", "Year");
-
-        assertEquals(output_stream.toString(), expected_str);
+                        "Title", "Author", "Year");
+        assertThat(output_stream.toString(), is(expected_str));
     }
 
     @Test

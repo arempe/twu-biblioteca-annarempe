@@ -6,15 +6,39 @@ import java.util.ArrayList;
 public class BibliotecaApp {
 
     private BookInventory book_inv;
-    private Menu menu;
+
+    private ArrayList<String> menu_opt;
+    private int quit_opt;
     private PrintStream out;
     private InputWrapper in_wrap;
 
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
         this.in_wrap = in_wrap;
+        setupMenu();
         setupBookInv();
-        this.menu = new Menu();
+
+    }
+
+    private void setupMenu() {
+        this.menu_opt = new ArrayList<String>();
+        this.menu_opt.add("List of books");
+        this.menu_opt.add("Checkout book");
+        this.menu_opt.add("Check-in book");
+        this.menu_opt.add("Quit");
+        this.quit_opt = this.menu_opt.size();
+    }
+
+
+    public String menuToString(){
+        String to_return;
+        to_return = "\nPlease select from the following options\n";
+        int i = 0;
+        for(String menu_opt: this.menu_opt){
+            i++;
+            to_return += String.format("%d)\t%s\n", i, menu_opt);
+        }
+        return to_return;
     }
 
     public static void main(String[] args) {
@@ -42,11 +66,11 @@ public class BibliotecaApp {
     }
 
     protected void openMenu() {
-        displayMenu();
+        int selection = -1;
+        while(selection != this.quit_opt){
+            displayMenu();
+            selection = this.in_wrap.getInt();
 
-        int selection = this.in_wrap.getInt();
-
-        while(selection != this.menu.getQuitOpt()){
             if(selection == 1){
                 displayBookInv();
             }
@@ -57,13 +81,14 @@ public class BibliotecaApp {
             else if(selection == 3){
                 checkInBook();
             }
+            else if(selection == this.quit_opt){
+                onQuit();
+                break;
+            }
             else{//invalid input
                 this.out.println("Please select a valid option!");
             }
-            displayMenu();
-            selection = this.in_wrap.getInt();
         }
-        onQuit();
     }
 
     private void checkInBook() {
@@ -98,12 +123,7 @@ public class BibliotecaApp {
 
 
     private void displayMenu(){
-        this.out.print("\nPlease select from the following options\n");
-        int i = 0;
-        for(String menu_opt: this.menu.getOpts()){
-            i++;
-            this.out.printf("%d)\t%s\n", i, menu_opt);
-        }
+        this.out.print(this.menuToString());
     }
 
     public void displayBookInv(){
@@ -112,7 +132,6 @@ public class BibliotecaApp {
 
     private void onQuit(){
         this.out.println("Thanks for using Biblioteca!");
-        //System.exit(0);
     }
 
 

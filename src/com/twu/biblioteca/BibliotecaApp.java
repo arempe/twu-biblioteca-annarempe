@@ -22,6 +22,7 @@ public class BibliotecaApp {
         InputWrapper input_wrapper = new InputWrapper();
         BibliotecaApp biblioteca_app = new BibliotecaApp(out, input_wrapper);
         biblioteca_app.onRun();
+        biblioteca_app.openMenu();
     }
 
     private void setupMenu() {
@@ -46,7 +47,7 @@ public class BibliotecaApp {
        // openMenu();
     }
 
-    private void openMenu() {
+    protected void openMenu() {
         displayMenu();
 
         int selection = this.in_wrap.getInt();

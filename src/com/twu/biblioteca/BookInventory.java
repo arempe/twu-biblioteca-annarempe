@@ -12,11 +12,11 @@ public class BookInventory {
     public BookInventory(PrintStream out){
         this.out = out;
         this.book_inv = new ArrayList<Book>();
-        this.book_inv.add(new Book("The Name of the Wind", "Patrick Rothfuss", 2007, this.out));
-        Book to_add = new Book("Green Eggs and Ham", "Dr. Seuss", 1960, this.out);
+        this.book_inv.add(new Book("The Name of the Wind", "Patrick Rothfuss", 2007));
+        Book to_add = new Book("Green Eggs and Ham", "Dr. Seuss", 1960);
         to_add.setStatus(false);
         this.book_inv.add(to_add);
-        this.book_inv.add(new Book("Milk and Honey", "Rupi Kaur", 2015, this.out));
+        this.book_inv.add(new Book("Milk and Honey", "Rupi Kaur", 2015));
         this.num_checked_in = 2;
     }
 

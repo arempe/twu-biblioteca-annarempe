@@ -7,10 +7,8 @@ public class Book {
     private String author;
     private int pub_year;
     private boolean checked_in;
-    private PrintStream out;
 
-    public Book(String title, String author, int pub_year, PrintStream out){
-        this.out = out;
+    public Book(String title, String author, int pub_year){
         this.title = title;
         this.author = author;
         this.pub_year = pub_year;

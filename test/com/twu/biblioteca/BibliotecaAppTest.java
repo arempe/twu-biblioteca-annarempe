@@ -123,9 +123,13 @@ public class BibliotecaAppTest {
                 biblioteca_app.menuToString() + "\n"
                 + biblioteca_app.getCheckOutMsg()
                 + biblioteca_app.getInvHeader()
-                + b1.toString() + "\n"
-                + b3.toString() + "\n"
-
+                + "1)\t" + b1.toString() + "\n"
+                        + "2)\t" + b3.toString() + "\n"
+                + "3)\tBack\n"
+                        + "Thank you! Enjoy the book\n"
+                + biblioteca_app.menuToString() + "\n"
+                + biblioteca_app.getInvHeader()
+                + "1)\t" + b3.toString() + "\n"
                 + biblioteca_app.menuToString() + "\n"
                 + biblioteca_app.getQuitMsg()
         );

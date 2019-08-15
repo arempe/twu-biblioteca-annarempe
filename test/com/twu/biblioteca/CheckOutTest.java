@@ -9,17 +9,16 @@ import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
 
-public class DisplayBookInvTest {
+public class CheckOutTest {
     private BibliotecaApp b1;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
 
     @Before
     public void before(){
-        b1 = new BibliotecaApp();
+      //  b1 = new BibliotecaApp();
 
-
-        System.setOut(new PrintStream(outContent));
+        //System.setOut(new PrintStream(outContent));
     }
 
     @Test

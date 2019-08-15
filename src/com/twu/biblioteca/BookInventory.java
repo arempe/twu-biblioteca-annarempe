@@ -1,16 +1,22 @@
 package com.twu.biblioteca;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class BookInventory {
     private int num_checked_in;
     private ArrayList<Book> book_inv;
+    private PrintStream out;
 
 
-    public BookInventory(){
+    public BookInventory(PrintStream out){
+        this.out = out;
         this.book_inv = new ArrayList<Book>();
-        this.book_inv.add(new Book("The Name of the Wind", "Patrick Rothfuss", 2007));
-        this.book_inv.add(new Book("Milk and Honey", "Rupi Kaur", 2015));
+        this.book_inv.add(new Book("The Name of the Wind", "Patrick Rothfuss", 2007, this.out));
+        Book to_add = new Book("Green Eggs and Ham", "Dr. Seuss", 1960, this.out);
+        to_add.setStatus(false);
+        this.book_inv.add(to_add);
+        this.book_inv.add(new Book("Milk and Honey", "Rupi Kaur", 2015, this.out));
         this.num_checked_in = 2;
     }
 
@@ -24,7 +30,7 @@ public class BookInventory {
             this.num_checked_in--;
         }
         else{
-            System.out.println("Book is not available");
+            this.out.println("Book is not available");
         }
     }
 
@@ -33,14 +39,14 @@ public class BookInventory {
         for(Book book: this.book_inv){
             if(book.getStatus()){
                 i++;
-                System.out.printf("%d)\t", i);
-                book.printBook();
+                this.out.printf("%d)\t", i);
+                this.out.println(book.toString());
             }
         }
     }
 
     protected void displayBookInventory(){
-        System.out.printf("\t%-20s\t%-20s\t%-5s\n", "Title", "Author", "Year");
+        this.out.printf("\t%-20s\t%-20s\t%-5s\n", "Title", "Author", "Year");
         printCheckedInBooks();
     }
 

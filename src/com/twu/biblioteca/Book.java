@@ -1,12 +1,16 @@
 package com.twu.biblioteca;
 
+import java.io.PrintStream;
+
 public class Book {
     private String title;
     private String author;
     private int pub_year;
     private boolean checked_in;
+    private PrintStream out;
 
-    public Book(String title, String author, int pub_year){
+    public Book(String title, String author, int pub_year, PrintStream out){
+        this.out = out;
         this.title = title;
         this.author = author;
         this.pub_year = pub_year;
@@ -29,8 +33,8 @@ public class Book {
         this.checked_in = status;
     }
 
-    public void printBook(){
-        System.out.printf("%-20s\t%-20s\t%-5d\n",
-                this.title, this.author, this.pub_year);
+    public String toString(){
+        return String.format("%-20s\t%-20s\t%-5d",
+        this.title, this.author, this.pub_year);
     }
 }

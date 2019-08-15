@@ -46,7 +46,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testSelectDisplayBookInv(){
+    public void testSelectDisplayBookInv() {
 
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
@@ -63,8 +63,8 @@ public class BibliotecaAppTest {
                         "2)\tCheckout book\n" +
                         "3)\tCheck-in book\n" +
                         "4)\tQuit\n" +
-                        "\t%-20s\t%-20s\t%-5s\n"+"1)\t"
-                +this.b1.toString()+ "\n2)\t"+this.b3.toString()+"\n\nPlease select from the following options\n" +
+                        "\t%-20s\t%-20s\t%-5s\n" + "1)\t"
+                        + this.b1.toString() + "\n2)\t" + this.b3.toString() + "\n\nPlease select from the following options\n" +
                         "1)\tList of books\n" +
                         "2)\tCheckout book\n" +
                         "3)\tCheck-in book\n" +
@@ -73,20 +73,7 @@ public class BibliotecaAppTest {
                         "Thanks for using Biblioteca!\n",
                 "Title", "Author", "Year");
 
-
         assertEquals(output_stream.toString(), expected_str);
-
-//        when(input_wrapper_mock.getInt()).thenReturn(4);
-
-        //assertThat();
-
-
-//        verify(input_wrapper).getInt(); //verify is called
-//        verify(input_wrapper, times(3)).getInt();//verify 3 times
-
-
-
-
     }
 
     @Test

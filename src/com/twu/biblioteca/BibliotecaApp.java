@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class BibliotecaApp {
 
     private BookInventory book_inv;
-    private ArrayList<String> menu_opt;
+    private Menu menu;
     private PrintStream out;
     private InputWrapper in_wrap;
 
@@ -14,7 +14,7 @@ public class BibliotecaApp {
         this.out = out;
         this.in_wrap = in_wrap;
         setupBookInv();
-        setupMenu();
+        this.menu = new Menu();
     }
 
     public static void main(String[] args) {
@@ -25,13 +25,7 @@ public class BibliotecaApp {
         biblioteca_app.openMenu();
     }
 
-    private void setupMenu() {
-        this.menu_opt = new ArrayList<String>();
-        this.menu_opt.add("List of books");
-        this.menu_opt.add("Checkout book");
-        this.menu_opt.add("Check-in book");
-        this.menu_opt.add("Quit");
-    }
+
 
     private void setupBookInv() {
         this.book_inv = new BookInventory(this.out);
@@ -52,7 +46,7 @@ public class BibliotecaApp {
 
         int selection = this.in_wrap.getInt();
 
-        while(selection != this.menu_opt.size()){
+        while(selection != this.menu.getQuitOpt()){
             if(selection == 1){
                 displayBookInv();
             }
@@ -106,7 +100,7 @@ public class BibliotecaApp {
     private void displayMenu(){
         this.out.print("\nPlease select from the following options\n");
         int i = 0;
-        for(String menu_opt: this.menu_opt){
+        for(String menu_opt: this.menu.getOpts()){
             i++;
             this.out.printf("%d)\t%s\n", i, menu_opt);
         }

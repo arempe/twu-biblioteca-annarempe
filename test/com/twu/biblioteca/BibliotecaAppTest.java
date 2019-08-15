@@ -49,8 +49,24 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testSelectDisplayBookInv() {
+    public void testOpenMenu(){
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+        when(input_wrapper_mock.getInt()).thenReturn(4);
+
+        biblioteca_app.openMenu();
+
+        String expected_str = biblioteca_app.menuToString() + biblioteca_app.displayQuitMsg() + "\n";
+
+        assertThat(output_stream.toString(), is(expected_str));
+    }
+
+    @Test
+    public void testSelectDisplayBookInv() {
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
         ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
@@ -61,12 +77,13 @@ public class BibliotecaAppTest {
 
         biblioteca_app.openMenu();
         String expected_str = String.format(
-                        biblioteca_app.menuToString() +
+                biblioteca_app.menuToString() +
                         "\t%-20s\t%-20s\t%-5s\n" + "1)\t"
                         + this.b1.toString() + "\n2)\t" + this.b3.toString() + "\n"
-                        + biblioteca_app.menuToString() +
-                        "Thanks for using Biblioteca!\n",
-                        "Title", "Author", "Year");
+                        + biblioteca_app.menuToString()
+                        + biblioteca_app.displayQuitMsg() + "\n",
+                "Title", "Author", "Year");
+
         assertThat(output_stream.toString(), is(expected_str));
     }
 

@@ -9,6 +9,7 @@ import java.io.PrintStream;
 
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -53,14 +54,29 @@ public class BibliotecaAppTest {
         PrintStream print_stream = new PrintStream(output_stream);
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
-        when(input_wrapper_mock.getInt()).thenReturn(1);
-
+        when(input_wrapper_mock.getInt()).thenReturn(1, 4);
 
         biblioteca_app.openMenu();
-        String expected_str = String.format("\t%-20s\t%-20s\t%-5s\n"+"1)\t"+this.b1.toString()+ "2)\t"+this.b3.toString(), "Title", "Author", "Year");
+        String expected_str = String.format("\n" +
+                        "Please select from the following options\n" +
+                        "1)\tList of books\n" +
+                        "2)\tCheckout book\n" +
+                        "3)\tCheck-in book\n" +
+                        "4)\tQuit\n" +
+                        "\t%-20s\t%-20s\t%-5s\n"+"1)\t"
+                +this.b1.toString()+ "\n2)\t"+this.b3.toString()+"\n\nPlease select from the following options\n" +
+                        "1)\tList of books\n" +
+                        "2)\tCheckout book\n" +
+                        "3)\tCheck-in book\n" +
+                        "4)\tQuit\n" +
 
-        assertThat(output_stream.toString(), is(expected_str));
-        when(input_wrapper_mock.getInt()).thenReturn(4);
+                        "Thanks for using Biblioteca!\n",
+                "Title", "Author", "Year");
+
+
+        assertEquals(output_stream.toString(), expected_str);
+
+//        when(input_wrapper_mock.getInt()).thenReturn(4);
 
         //assertThat();
 

@@ -118,7 +118,7 @@ public class BibliotecaApp {
 
     private void onQuit(){
         this.out.println("Thanks for using Biblioteca!");
-        System.exit(0);
+        //System.exit(0);
     }
 
 

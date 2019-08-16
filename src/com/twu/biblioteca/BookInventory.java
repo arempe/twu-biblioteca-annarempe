@@ -90,4 +90,17 @@ public class BookInventory {
         return this.inv_header_msg;
     }
 
+    public boolean checkInBook(String book_title) {
+        boolean check_in_success = false;
+        for(Book book : this.book_inv){
+            if(book.getTitle().equals(book_title)){
+                if(!book.getStatus()){
+                    book.setStatus(true);
+                    check_in_success = true;
+                    break;
+                }
+            }
+        }
+        return check_in_success;
+    }
 }

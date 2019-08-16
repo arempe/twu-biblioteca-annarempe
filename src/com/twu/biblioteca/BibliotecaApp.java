@@ -1,7 +1,9 @@
 package com.twu.biblioteca;
 
+
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BibliotecaApp {
 
@@ -96,9 +98,13 @@ public class BibliotecaApp {
 
     private void checkInBook() {
         this.out.print(this.check_in_header_msg);
+        String book_title = this.in_wrap.getString();
+        checkInBook(book_title);
     }
 
     public void checkInBook(String book_title) {
+        this.book_inv.checkInBook(book_title);
+
     }
 
     private void checkOutBook() {

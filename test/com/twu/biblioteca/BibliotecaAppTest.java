@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
 public class BibliotecaAppTest {
     private BibliotecaApp biblioteca_app;
     private Book b1, b2, b3;
+    private Movie m1;
 
     @Before
     public void setUp() {
@@ -22,6 +23,7 @@ public class BibliotecaAppTest {
         b2 = new Book("Green Eggs and Ham", "Dr. Seuss", 1960);
         b2.setStatus(false);
         b3 = new Book("Milk and Honey", "Rupi Kaur", 2015);
+        m1 = new Movie("Moonlight", 2016, "Barry Jenkins", 7);
 
     }
 
@@ -51,7 +53,7 @@ public class BibliotecaAppTest {
         PrintStream print_stream = new PrintStream(output_stream);
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
-        when(input_wrapper_mock.getInt()).thenReturn(4);
+        when(input_wrapper_mock.getInt()).thenReturn(this.biblioteca_app.getQuitOpt());
 
         biblioteca_app.openMenu();
 
@@ -68,7 +70,7 @@ public class BibliotecaAppTest {
         PrintStream print_stream = new PrintStream(output_stream);
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
-        when(input_wrapper_mock.getInt()).thenReturn(1, 4);
+        when(input_wrapper_mock.getInt()).thenReturn(1, this.biblioteca_app.getQuitOpt());
 
         biblioteca_app.openMenu();
         String expected_str = String.format(
@@ -90,7 +92,7 @@ public class BibliotecaAppTest {
         PrintStream print_stream = new PrintStream(output_stream);
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
-        when(input_wrapper_mock.getInt()).thenReturn(-1, 4);
+        when(input_wrapper_mock.getInt()).thenReturn(-1, this.biblioteca_app.getQuitOpt());
 
         biblioteca_app.openMenu();
         String expected_str = String.format(
@@ -110,7 +112,7 @@ public class BibliotecaAppTest {
         PrintStream print_stream = new PrintStream(output_stream);
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
-        when(input_wrapper_mock.getInt()).thenReturn(3, 4);
+        when(input_wrapper_mock.getInt()).thenReturn(3, this.biblioteca_app.getQuitOpt());
         when(input_wrapper_mock.getString()).thenReturn("Green Eggs and Ham");
 
         biblioteca_app.openMenu();
@@ -132,7 +134,7 @@ public class BibliotecaAppTest {
         PrintStream print_stream = new PrintStream(output_stream);
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
-        when(input_wrapper_mock.getInt()).thenReturn(3, 1, 4);
+        when(input_wrapper_mock.getInt()).thenReturn(3, 1, this.biblioteca_app.getQuitOpt());
         when(input_wrapper_mock.getString()).thenReturn("Green Eggs and Ham");
 
         biblioteca_app.openMenu();
@@ -159,7 +161,7 @@ public class BibliotecaAppTest {
         PrintStream print_stream = new PrintStream(output_stream);
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
-        when(input_wrapper_mock.getInt()).thenReturn(3, 4);
+        when(input_wrapper_mock.getInt()).thenReturn(3, this.biblioteca_app.getQuitOpt());
         when(input_wrapper_mock.getString()).thenReturn("Green Eggs and Ha");
 
         biblioteca_app.openMenu();
@@ -181,7 +183,7 @@ public class BibliotecaAppTest {
         PrintStream print_stream = new PrintStream(output_stream);
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
-        when(input_wrapper_mock.getInt()).thenReturn(2, 1, 1, 4);
+        when(input_wrapper_mock.getInt()).thenReturn(2, 1, 1, this.biblioteca_app.getQuitOpt());
 
         biblioteca_app.openMenu();
         String expected_str = String.format(
@@ -202,6 +204,24 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testDisplayBookInv() {
+    public void testListMovieOption(){
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+        when(input_wrapper_mock.getInt()).thenReturn(4, this.biblioteca_app.getQuitOpt());
+
+        biblioteca_app.openMenu();
+        String expected_str = String.format(
+                biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getBookInvHeader()
+                        + "1)\t" + m1.toString()
+                        + biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getQuitMsg()
+        );
+        assertThat(output_stream.toString(), is(expected_str));
+
     }
 }

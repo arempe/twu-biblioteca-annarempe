@@ -3,11 +3,11 @@ package com.twu.biblioteca;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class BibliotecaApp {
 
     private BookInventory book_inv;
+    private MovieInventory movie_inv;
 
     private ArrayList<String> menu_opt;
     private int quit_opt;
@@ -22,13 +22,16 @@ public class BibliotecaApp {
     private String check_in_success_msg = "Thank you for returning the book\n";
     private String check_in_failure_msg = "That is not a valid book to return\n";
 
+
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
         this.in_wrap = in_wrap;
         setupMenu();
         setupBookInv();
+        setupMovieInv();
 
     }
+
 
     public static void main(String[] args) {
         PrintStream out = new PrintStream(System.out);
@@ -43,6 +46,7 @@ public class BibliotecaApp {
         this.menu_opt.add("List of books");
         this.menu_opt.add("Checkout book");
         this.menu_opt.add("Check-in book");
+        this.menu_opt.add("List of movies");
         this.menu_opt.add("Quit");
         this.quit_opt = this.menu_opt.size();
     }
@@ -57,6 +61,10 @@ public class BibliotecaApp {
             to_return.append(String.format("%d)\t%s\n", i, menu_opt));
         }
         return to_return.toString();
+    }
+
+    private void setupMovieInv() {
+        this.movie_inv = new MovieInventory(this.out);
     }
 
     private void setupBookInv() {
@@ -89,6 +97,9 @@ public class BibliotecaApp {
             else if(selection == 3){
                 checkInBook();
             }
+            else if(selection == 4){
+                displayMovieInventory();
+            }
             else{//invalid input
                 this.out.print(this.invalid_option_msg);
             }
@@ -96,6 +107,10 @@ public class BibliotecaApp {
             selection = this.in_wrap.getInt();
         }
         onQuit();
+    }
+
+    private void displayMovieInventory() {
+        this.movie_inv.displayMovieInventory();
     }
 
     private void checkInBook() {
@@ -150,6 +165,9 @@ public class BibliotecaApp {
         this.out.print(this.quit_msg);
     }
 
+    protected int getQuitOpt(){
+        return this.quit_opt;
+    }
     protected String getQuitMsg(){
         return this.quit_msg;
     }
@@ -175,5 +193,9 @@ public class BibliotecaApp {
 
     public String getCheckInFailMsg() {
         return this.check_in_failure_msg;
+    }
+
+    public String getBookInvHeader() {
+        return this.movie_inv.getInvHeader();
     }
 }

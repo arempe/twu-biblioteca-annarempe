@@ -21,6 +21,7 @@ public class BibliotecaApp {
     private String check_in_header_msg = "Please enter the title of the book you are checking in\n";
     private String check_in_success_msg = "Thank you for returning the book\n";
     private String check_in_failure_msg = "That is not a valid book to return\n";
+    private String movie_check_out_header_msg = "Please select the number next to the movie you want to checkout\n";
 
 
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
@@ -47,6 +48,7 @@ public class BibliotecaApp {
         this.menu_opt.add("Checkout book");
         this.menu_opt.add("Check-in book");
         this.menu_opt.add("List of movies");
+        this.menu_opt.add("Checkout movie");
         this.menu_opt.add("Quit");
         this.quit_opt = this.menu_opt.size();
     }
@@ -100,6 +102,9 @@ public class BibliotecaApp {
             else if(selection == 4){
                 displayMovieInventory();
             }
+            else if(selection == 5){
+                checkOutMovie();
+            }
             else{//invalid input
                 this.out.print(this.invalid_option_msg);
             }
@@ -108,6 +113,7 @@ public class BibliotecaApp {
         }
         onQuit();
     }
+
 
     private void displayMovieInventory() {
         this.movie_inv.displayMovieInventory();
@@ -128,6 +134,28 @@ public class BibliotecaApp {
     public boolean checkInBook(String book_title) {
         return(this.book_inv.checkInBook(book_title));
 
+    }
+
+    private void checkOutMovie() {
+        this.out.print(this.movie_check_out_header_msg);
+        displayMovieInventory();
+        this.out.printf("%d)\tBack\n", this.movie_inv.getNumCheckedIn() + 1);
+
+        int selection = this.in_wrap.getInt();
+
+        if(selection == this.movie_inv.getNumCheckedIn() + 1){
+            //return to menu
+        }
+        else if(selection < 1 || selection > this.movie_inv.getNumCheckedIn()){
+            this.out.println("Sorry, that movie is not available");
+        }
+        else{
+            checkOutMovie(selection);
+        }
+    }
+
+    private void checkOutMovie(int selection) {
+        this.movie_inv.checkOutMovie(selection);
     }
 
     private void checkOutBook() {
@@ -195,7 +223,11 @@ public class BibliotecaApp {
         return this.check_in_failure_msg;
     }
 
-    public String getBookInvHeader() {
+    public String getMovieInvHeader() {
         return this.movie_inv.getInvHeader();
+    }
+
+    public String getCheckInMovieHeader() {
+        return this.movie_check_out_header_msg;
     }
 }

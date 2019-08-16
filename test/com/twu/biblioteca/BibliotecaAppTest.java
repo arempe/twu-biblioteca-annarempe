@@ -46,7 +46,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testOpenMenu(){
+    public void testOpenMenu() {
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
         ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
@@ -57,7 +57,7 @@ public class BibliotecaAppTest {
 
         biblioteca_app.openMenu();
 
-        String expected_str = biblioteca_app.menuToString()  + "\n" + biblioteca_app.getQuitMsg();
+        String expected_str = biblioteca_app.menuToString() + "\n" + biblioteca_app.getQuitMsg();
 
         assertThat(output_stream.toString(), is(expected_str));
     }
@@ -85,7 +85,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testSelectInvalidMenuOpt(){
+    public void testSelectInvalidMenuOpt() {
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
         ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
@@ -118,16 +118,16 @@ public class BibliotecaAppTest {
         biblioteca_app.openMenu();
         String expected_str = String.format(
                 biblioteca_app.menuToString() + "\n"
-                + biblioteca_app.getCheckInMsg()
-                + biblioteca_app.getCheckInSuccessMsg()
-                + biblioteca_app.menuToString() + "\n"
-                + biblioteca_app.getQuitMsg()
+                        + biblioteca_app.getCheckInMsg()
+                        + biblioteca_app.getCheckInSuccessMsg()
+                        + biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getQuitMsg()
         );
         assertThat(output_stream.toString(), is(expected_str));
     }
 
     @Test
-    public void testCheckInBookSuccess(){
+    public void testCheckInBookSuccess() {
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
         ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
@@ -145,7 +145,7 @@ public class BibliotecaAppTest {
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getInvHeader()
                         + "1)\t" + b1.toString()
-                        + "\n2)\t"+ b2.toString()
+                        + "\n2)\t" + b2.toString()
                         + "\n3)\t" + b3.toString() + "\n"
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getQuitMsg()
@@ -154,7 +154,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testCheckInFailBook(){
+    public void testCheckInFailBook() {
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
         ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
@@ -188,23 +188,23 @@ public class BibliotecaAppTest {
         biblioteca_app.openMenu();
         String expected_str = String.format(
                 biblioteca_app.menuToString() + "\n"
-                + biblioteca_app.getCheckOutMsg()
-                + biblioteca_app.getInvHeader()
-                + "1)\t" + b1.toString() + "\n"
+                        + biblioteca_app.getCheckOutMsg()
+                        + biblioteca_app.getInvHeader()
+                        + "1)\t" + b1.toString() + "\n"
                         + "2)\t" + b3.toString() + "\n"
-                + "3)\tBack\n"
+                        + "3)\tBack\n"
                         + "Thank you! Enjoy the book\n"
-                + biblioteca_app.menuToString() + "\n"
-                + biblioteca_app.getInvHeader()
-                + "1)\t" + b3.toString() + "\n"
-                + biblioteca_app.menuToString() + "\n"
-                + biblioteca_app.getQuitMsg()
+                        + biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getInvHeader()
+                        + "1)\t" + b3.toString() + "\n"
+                        + biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getQuitMsg()
         );
         assertThat(output_stream.toString(), is(expected_str));
     }
 
     @Test
-    public void testListMovieOption(){
+    public void testListMovieOption() {
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
         ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
@@ -216,12 +216,36 @@ public class BibliotecaAppTest {
         biblioteca_app.openMenu();
         String expected_str = String.format(
                 biblioteca_app.menuToString() + "\n"
-                        + biblioteca_app.getBookInvHeader()
+                        + biblioteca_app.getMovieInvHeader()
                         + "1)\t" + m1.toString()
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getQuitMsg()
         );
         assertThat(output_stream.toString(), is(expected_str));
-
     }
-}
+
+    @Test
+    public void testCheckOutMovieSuccess() {
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+        when(input_wrapper_mock.getInt()).thenReturn(5, 1, 4, this.biblioteca_app.getQuitOpt());
+
+        biblioteca_app.openMenu();
+        String expected_str = String.format(
+                biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getCheckInMovieHeader()
+                        + biblioteca_app.getMovieInvHeader()
+                        + "1)\t" + m1.toString()
+                        + "2)\tBack\n"
+                        + biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getMovieInvHeader()
+                        + biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getQuitMsg()
+        );
+        assertThat(output_stream.toString(), is(expected_str));
+    }
+}    

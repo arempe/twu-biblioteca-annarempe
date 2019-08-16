@@ -16,6 +16,7 @@ public class BibliotecaApp {
     private String invalid_option_msg = "Please select a valid option!\n";
     private String quit_msg = "Thank you for using BibliotecaApp!\n";
     private String check_out_header_msg = "Please select the number next to the book you want to checkout\n";
+    private String check_in_header_msg = "Please enter the title of the book you are checking in\n";
 
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
@@ -94,7 +95,7 @@ public class BibliotecaApp {
     }
 
     private void checkInBook() {
-        this.out.println("");
+        this.out.print(this.check_in_header_msg);
     }
 
     public void checkInBook(String book_title) {
@@ -148,5 +149,9 @@ public class BibliotecaApp {
 
     public String getInvHeader() {
         return this.book_inv.getInvHeaderMsg();
+    }
+
+    public String getCheckInMsg() {
+        return this.check_in_header_msg;
     }
 }

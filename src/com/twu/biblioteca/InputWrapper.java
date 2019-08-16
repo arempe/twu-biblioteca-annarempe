@@ -7,4 +7,9 @@ public class InputWrapper {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
+
+    public String getString() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
+    }
 }

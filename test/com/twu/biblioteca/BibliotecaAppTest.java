@@ -117,6 +117,7 @@ public class BibliotecaAppTest {
         String expected_str = String.format(
                 biblioteca_app.menuToString() + "\n"
                 + biblioteca_app.getCheckInMsg()
+                + biblioteca_app.getCheckInSuccessMsg()
                 + biblioteca_app.menuToString() + "\n"
                 + biblioteca_app.getQuitMsg()
         );
@@ -124,7 +125,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void testCheckInBookDisplayInv(){
+    public void testCheckInBookSuccess(){
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
         ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
@@ -138,11 +139,34 @@ public class BibliotecaAppTest {
         String expected_str = String.format(
                 biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getCheckInMsg()
+                        + biblioteca_app.getCheckInSuccessMsg()
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getInvHeader()
                         + "1)\t" + b1.toString()
                         + "\n2)\t"+ b2.toString()
                         + "\n3)\t" + b3.toString() + "\n"
+                        + biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getQuitMsg()
+        );
+        assertThat(output_stream.toString(), is(expected_str));
+    }
+
+    @Test
+    public void testCheckInFailBook(){
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+        when(input_wrapper_mock.getInt()).thenReturn(3, 4);
+        when(input_wrapper_mock.getString()).thenReturn("Green Eggs and Ha");
+
+        biblioteca_app.openMenu();
+        String expected_str = String.format(
+                biblioteca_app.menuToString() + "\n"
+                        + biblioteca_app.getCheckInMsg()
+                        + biblioteca_app.getCheckInFailMsg()
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getQuitMsg()
         );

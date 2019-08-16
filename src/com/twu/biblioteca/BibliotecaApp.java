@@ -19,6 +19,8 @@ public class BibliotecaApp {
     private String quit_msg = "Thank you for using BibliotecaApp!\n";
     private String check_out_header_msg = "Please select the number next to the book you want to checkout\n";
     private String check_in_header_msg = "Please enter the title of the book you are checking in\n";
+    private String check_in_success_msg = "Thank you for returning the book\n";
+    private String check_in_failure_msg = "That is not a valid book to return\n";
 
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
@@ -99,11 +101,17 @@ public class BibliotecaApp {
     private void checkInBook() {
         this.out.print(this.check_in_header_msg);
         String book_title = this.in_wrap.getString();
-        checkInBook(book_title);
+        boolean success = checkInBook(book_title);
+        if(success){
+            this.out.print(this.check_in_success_msg);
+        }
+        else{
+            this.out.print(this.check_in_failure_msg);
+        }
     }
 
-    public void checkInBook(String book_title) {
-        this.book_inv.checkInBook(book_title);
+    public boolean checkInBook(String book_title) {
+        return(this.book_inv.checkInBook(book_title));
 
     }
 
@@ -157,7 +165,15 @@ public class BibliotecaApp {
         return this.book_inv.getInvHeaderMsg();
     }
 
+    public String getCheckInSuccessMsg(){
+        return this.check_in_success_msg;
+    }
+
     public String getCheckInMsg() {
         return this.check_in_header_msg;
+    }
+
+    public String getCheckInFailMsg() {
+        return this.check_in_failure_msg;
     }
 }

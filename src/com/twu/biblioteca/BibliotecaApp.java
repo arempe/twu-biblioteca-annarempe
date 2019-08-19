@@ -65,6 +65,7 @@ public class BibliotecaApp {
         this.menu_opt.add("List of movies");
         this.menu_opt.add("Checkout movie");
         this.menu_opt.add("Check-in movie");
+        this.menu_opt.add("Display userr info");
         this.menu_opt.add("Quit");
         this.quit_opt = this.menu_opt.size();
     }
@@ -123,6 +124,9 @@ public class BibliotecaApp {
             else if(selection == 6){
                 checkInMovie();
             }
+            else if(selection == 7){
+                displayUsrInfo();
+            }
             else{//invalid input
                 this.out.print(this.invalid_option_msg);
             }
@@ -130,6 +134,15 @@ public class BibliotecaApp {
             selection = this.in_wrap.getInt();
         }
         onQuit();
+    }
+
+    private void displayUsrInfo() {
+        if(!this.logged_in){
+            promptLogin();
+        }
+        if(this.logged_in){
+            this.out.print(this.accounts.searchUsrs(this.current_lib_num).toString());
+        }
     }
 
     private void checkInMovie() {
@@ -259,6 +272,9 @@ public class BibliotecaApp {
         this.out.print(this.pass_prompt);
         String password = this.in_wrap.getString().trim();
         this.logged_in = this.accounts.login(libnum, password);
+        if(logged_in){
+            this.current_lib_num = libnum;
+        }
         return logged_in;
     }
 
@@ -316,9 +332,18 @@ public class BibliotecaApp {
         return this.movie_check_out_header_msg;
     }
 
+    public String getLibNumPromptHeader(){
+        return this.lib_num_prompt;
+    }
+
+    public String getPassPrompt(){
+        return this.pass_prompt;
+    }
+
     public boolean getLoginStatus() {
         return this.logged_in;
     }
+
 
     public String getCheckedInUsr() {
         return this.current_lib_num;

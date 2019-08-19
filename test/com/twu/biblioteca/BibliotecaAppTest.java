@@ -203,7 +203,7 @@ public class BibliotecaAppTest {
                         + "3)\tBack\n"
                         + biblioteca_app.getLibNumPromptHeader()
                         + biblioteca_app.getPassPrompt()
-                        + "Thank you! Enjoy the book\n"
+                        + biblioteca_app.check_out_success_msg
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getInvHeader()
                         + "1)\t" + b3.toString() + "\n"
@@ -254,7 +254,7 @@ public class BibliotecaAppTest {
                         + "2)\tBack\n"
                         + "Please enter your library number in the form XXX-XXXX\n"
                         + "Please enter your password\n"
-                        + "Thank you! Enjoy the movie\n"
+                        + biblioteca_app.check_out_success_msg
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getMovieInvHeader()
                         + biblioteca_app.menuToString() + "\n"
@@ -295,7 +295,7 @@ public class BibliotecaAppTest {
 
 
 
-        biblioteca_app.checkOutBook(1, "111-1111");
+        biblioteca_app.checkOutItem(1, "111-1111", "Book");
         String lib_num = biblioteca_app.getUserCheckedOut("The Name of the Wind");
         assertThat(lib_num, is("111-1111"));
     }
@@ -314,7 +314,7 @@ public class BibliotecaAppTest {
 
 
 
-        biblioteca_app.checkOutMovie(1, "111-1111");
+        biblioteca_app.checkOutItem(1, "111-1111", "movie");
         String lib_num = biblioteca_app.getUserCheckedOut("Moonlight");
         assertThat(lib_num, is("111-1111"));
     }

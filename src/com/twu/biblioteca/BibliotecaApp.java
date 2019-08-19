@@ -22,14 +22,14 @@ public class BibliotecaApp {
     // msgs
     private String invalid_option_msg = "Please select a valid option!\n";
     private String quit_msg = "Thank you for using BibliotecaApp!\n";
-    private String check_out_header_msg = "Please select the number next to the book you want to checkout\n";
+    private String check_out_header_msg = "Please select the number next to the item you want to checkout\n";
     private String check_in_success_msg = "Thank you for returning this item\n";
     private String check_in_failure_msg = "That is not a valid item to return\n";
-    private String movie_check_out_header_msg = "Please select the number next to the movie you want to checkout\n";
     private String lib_num_prompt = "Please enter your library number in the form XXX-XXXX\n";
     private String pass_prompt = "Please enter your password\n";
     private String invalid_login_prompt = "Sorry, incorrect login information\n";
     private String check_in_header = "Please enter the title of the item you are checking in\n";
+    protected String check_out_success_msg = "Thank you, enjoy!\n";
 
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
@@ -94,7 +94,7 @@ public class BibliotecaApp {
                 this.book_inv.displayInventory();
             }
             else if(selection == 2){
-                checkOutBook();
+                checkOutItem("Book");
             }
             else if(selection == 3){
                 checkInItem("Book");
@@ -103,7 +103,7 @@ public class BibliotecaApp {
                 this.movie_inv.displayInventory();
             }
             else if(selection == 5){
-                checkOutMovie();
+                checkOutItem("Movie");
             }
             else if(selection == 6){
                 checkInItem("Movie");
@@ -156,67 +156,59 @@ public class BibliotecaApp {
             this.out.print(this.check_in_failure_msg);
         }
     }
-    
-    private void checkOutMovie() {
-        this.out.print(this.movie_check_out_header_msg);
-        this.movie_inv.displayInventory();
-        this.out.printf("%d)\tBack\n", this.movie_inv.getNumCheckedIn() + 1);
+
+    private void checkOutItem(String type) {
+        this.out.print(this.check_out_header_msg);
+        int num_checked_in = -1;
+        if(type.toLowerCase().equals("movie")){
+            this.movie_inv.displayInventory();
+            num_checked_in = this.movie_inv.getNumCheckedIn();
+        }
+        else{
+            this.book_inv.displayInventory();
+            num_checked_in = this.book_inv.getNumCheckedIn();
+        }
+
+        this.out.printf("%d)\tBack\n", num_checked_in + 1);
 
         int selection = this.in_wrap.getInt();
 
-        if(selection == this.movie_inv.getNumCheckedIn() + 1){
+        if(selection == num_checked_in + 1){
             //return to menu
         }
-        else if(selection < 1 || selection > this.movie_inv.getNumCheckedIn()){
+        else if(selection < 1 || selection > num_checked_in){
             this.out.println("Sorry, that movie is not available");
         }
         else{
-            checkOutMovie(selection, this.current_lib_num);
+            if(type.toLowerCase().equals("movie")) {
+                checkOutItem(selection, this.current_lib_num, "movie");
+            }
+            else{
+                checkOutItem(selection, this.current_lib_num, "book");
+            }
         }
     }
-
-    protected void checkOutMovie(int selection, String lib_num) {
+    
+    protected void checkOutItem(Integer selection, String lib_num, String type) {
         if(!this.logged_in){
             promptLogin();
         }
-
         if(this.logged_in){
-            if(this.movie_inv.checkOutItem(selection, lib_num));
+            boolean check_out_success = false;
+            if(type.toLowerCase().equals("movie")){
+                check_out_success = this.movie_inv.checkOutItem(selection, lib_num);
+            }
+            else{
+                check_out_success = this.book_inv.checkOutItem(selection, lib_num);
+            }
+
+            if(check_out_success)
             {
-                this.out.println("Thank you! Enjoy the movie");
+                this.out.print(this.check_out_success_msg);
             }
         }
         else{
             this.out.print(this.invalid_login_prompt);
-        }
-    }
-
-    protected void checkOutBook() {
-        this.out.print(this.check_out_header_msg);
-        this.book_inv.displayInventory();
-        this.out.printf("%d)\tBack\n", this.book_inv.getNumCheckedIn() + 1);
-
-        int selection = this.in_wrap.getInt();
-
-        if(selection == this.book_inv.getNumCheckedIn() + 1){
-            //return to menu
-        }
-        else if(selection < 1 || selection > this.book_inv.getNumCheckedIn()){
-            this.out.println("Sorry, that book is not available");
-        }
-        else{
-
-            if(!this.logged_in){
-                promptLogin();
-            }
-
-            if(this.logged_in){
-                checkOutBook(selection, this.current_lib_num);
-                this.out.println("Thank you! Enjoy the book");
-            }
-            else{
-                this.out.print(this.invalid_login_prompt);
-            }
         }
     }
 
@@ -230,10 +222,6 @@ public class BibliotecaApp {
             this.current_lib_num = libnum;
         }
         return logged_in;
-    }
-
-    protected void checkOutBook(Integer selection, String usr_lib_num) {
-        this.book_inv.checkOutItem(selection, usr_lib_num);
     }
 
     private void displayMenu(){
@@ -279,7 +267,7 @@ public class BibliotecaApp {
     }
 
     public String getCheckInMovieHeader() {
-        return this.movie_check_out_header_msg;
+        return this.check_out_header_msg;
     }
 
     public String getLibNumPromptHeader(){

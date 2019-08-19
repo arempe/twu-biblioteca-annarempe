@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import javax.print.MultiDocPrintService;
 import java.io.PrintStream;
 
 public class Book {
@@ -40,5 +41,9 @@ public class Book {
 
     public String getCheckedOutBy(){
         return this.checked_out_by;
+    }
+
+    public void setCheckedOutBy(String usr_lib_num) {
+        this.checked_out_by = usr_lib_num;
     }
 }

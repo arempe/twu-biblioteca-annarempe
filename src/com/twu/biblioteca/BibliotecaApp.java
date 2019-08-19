@@ -173,7 +173,7 @@ public class BibliotecaApp {
         }
 
         if(this.logged_in){
-            if(this.movie_inv.checkOutMovie(selection));
+            if(this.movie_inv.checkOutMovie(selection, this.current_lib_num));
             {
                 this.out.println("Thank you! Enjoy the book");
             }
@@ -183,7 +183,7 @@ public class BibliotecaApp {
         }
     }
 
-    protected String checkOutBook() {
+    protected void checkOutBook() {
         this.out.print(this.check_out_header_msg);
         displayBookInv();
         this.out.printf("%d)\tBack\n", this.book_inv.getNumCheckedIn() + 1);
@@ -203,14 +203,13 @@ public class BibliotecaApp {
             }
 
             if(this.logged_in){
-                checkOutBook(selection);
+                checkOutBook(selection, this.current_lib_num);
                 this.out.println("Thank you! Enjoy the book");
             }
             else{
                 this.out.print(this.invalid_login_prompt);
             }
         }
-        return this.current_lib_num;
     }
 
     boolean promptLogin() {
@@ -222,8 +221,8 @@ public class BibliotecaApp {
         return logged_in;
     }
 
-    protected void checkOutBook(Integer selection) {
-        this.book_inv.checkOutBook(selection);
+    protected void checkOutBook(Integer selection, String usr_lib_num) {
+        this.book_inv.checkOutBook(selection, usr_lib_num);
     }
 
     private void displayMenu(){

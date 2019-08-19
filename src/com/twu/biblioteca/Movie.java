@@ -1,5 +1,7 @@
 package com.twu.biblioteca;
 
+import javax.print.MultiDocPrintService;
+
 public class Movie {
     private String title;
     private int yr;
@@ -44,5 +46,9 @@ public class Movie {
 
     public String getCheckedOutBy() {
         return this.checked_out_by;
+    }
+
+    public void setCheckedOutBy(String usr_lib_num) {
+        this.checked_out_by = usr_lib_num;
     }
 }

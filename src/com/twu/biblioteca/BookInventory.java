@@ -23,12 +23,13 @@ public class BookInventory {
     }
 
 
-    public void checkOutBook(int selection){
+    public void checkOutBook(int selection, String usr_lib_num){
         //selection based off of list of books which only displays available books
         int ind = selectionToInd(selection);
         Book to_check_out = this.book_inv.get(ind);
         if(to_check_out.getStatus()) {
             to_check_out.setStatus(false);
+            to_check_out.setCheckedOutBy(usr_lib_num);
             this.num_checked_in--;
         }
         else{

@@ -281,7 +281,7 @@ public class BibliotecaAppTest {
 
 
 
-
+        biblioteca_app.checkOutBook(1, "111-1111");
         String lib_num = biblioteca_app.getUserCheckedOut("The Name of the Wind");
         assertThat(lib_num, is("111-1111"));
 

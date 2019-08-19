@@ -59,13 +59,14 @@ public class MovieInventory {
         return return_ind;
     }
 
-    public boolean checkOutMovie(int selection) {
+    public boolean checkOutMovie(int selection, String usr_lib_num) {
         //selection based off of list of books which only displays available movies
         int ind = selectionToInd(selection);
         boolean success = false;
         Movie to_check_out = this.movie_inv.get(ind);
         if(to_check_out.getStatus()) {
             to_check_out.setStatus(false);
+            to_check_out.setCheckedOutBy(usr_lib_num);
             this.num_checked_in--;
             success = true;
         }

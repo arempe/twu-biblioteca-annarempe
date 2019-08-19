@@ -23,9 +23,10 @@ public class BibliotecaApp {
     private String invalid_option_msg = "Please select a valid option!\n";
     private String quit_msg = "Thank you for using BibliotecaApp!\n";
     private String check_out_header_msg = "Please select the number next to the book you want to checkout\n";
-    private String check_in_header_msg = "Please enter the title of the book you are checking in\n";
-    private String check_in_success_msg = "Thank you for returning the book\n";
-    private String check_in_failure_msg = "That is not a valid book to return\n";
+    private String book_check_in_header_msg = "Please enter the title of the book you are checking in\n";
+    private String movie_check_in_header_msg = "Please enter the title of the movie you are checking in\n";
+    private String check_in_success_msg = "Thank you for returning this item\n";
+    private String check_in_failure_msg = "That is not a valid item to return\n";
     private String movie_check_out_header_msg = "Please select the number next to the movie you want to checkout\n";
     private String lib_num_prompt = "Please enter your library number in the form XXX-XXXX\n";
     private String pass_prompt = "Please enter your password\n";
@@ -118,6 +119,9 @@ public class BibliotecaApp {
             else if(selection == 5){
                 checkOutMovie();
             }
+            else if(selection == 6){
+                checkInMovie();
+            }
             else{//invalid input
                 this.out.print(this.invalid_option_msg);
             }
@@ -127,13 +131,30 @@ public class BibliotecaApp {
         onQuit();
     }
 
+    private void checkInMovie() {
+        this.out.print(this.movie_check_in_header_msg);
+        String movie_title = this.in_wrap.getString();
+        boolean success = checkInMovie(movie_title);
+        if(success){
+            this.out.print(this.check_in_success_msg);
+        }
+        else
+        {
+            this.out.print(this.check_in_failure_msg);
+        }
+    }
+
+    protected boolean checkInMovie(String movie_title) {
+        return(this.movie_inv.checkInMovie(movie_title));
+    }
+
 
     private void displayMovieInventory() {
         this.movie_inv.displayMovieInventory();
     }
 
     private void checkInBook() {
-        this.out.print(this.check_in_header_msg);
+        this.out.print(this.book_check_in_header_msg);
         String book_title = this.in_wrap.getString();
         boolean success = checkInBook(book_title);
         if(success){
@@ -148,6 +169,7 @@ public class BibliotecaApp {
         return(this.book_inv.checkInBook(book_title));
 
     }
+    
 
     private void checkOutMovie() {
         this.out.print(this.movie_check_out_header_msg);
@@ -163,19 +185,19 @@ public class BibliotecaApp {
             this.out.println("Sorry, that movie is not available");
         }
         else{
-            checkOutMovie(selection);
+            checkOutMovie(selection, this.current_lib_num);
         }
     }
 
-    private void checkOutMovie(int selection) {
+    protected void checkOutMovie(int selection, String lib_num) {
         if(!this.logged_in){
             promptLogin();
         }
 
         if(this.logged_in){
-            if(this.movie_inv.checkOutMovie(selection, this.current_lib_num));
+            if(this.movie_inv.checkOutMovie(selection, lib_num));
             {
-                this.out.println("Thank you! Enjoy the book");
+                this.out.println("Thank you! Enjoy the movie");
             }
         }
         else{
@@ -260,7 +282,7 @@ public class BibliotecaApp {
     }
 
     public String getCheckInMsg() {
-        return this.check_in_header_msg;
+        return this.book_check_in_header_msg;
     }
 
     public String getCheckInFailMsg() {
@@ -283,19 +305,36 @@ public class BibliotecaApp {
         return this.current_lib_num;
     }
 
-    public String getUserCheckedOut(String Title) {
-        Book book = this.book_inv.searchInv(Title);
+    public String getUserCheckedOut(String title) {
+        Book book = this.book_inv.searchInv(title);
         Movie movie;
         String lib_num = null;
         if(book != null){
             lib_num = book.getCheckedOutBy();
         }
         else{
-            movie = this.movie_inv.searchInv(Title);
+            movie = this.movie_inv.searchInv(title);
                 if(movie != null){
                     lib_num = movie.getCheckedOutBy();
                 }
             }
         return lib_num;
+    }
+
+    public boolean getCheckedInStatus(String title) {
+        Book book = this.book_inv.searchInv(title);
+        Movie movie;
+        boolean status = false;
+
+        if(book != null){
+            status = book.getStatus();
+        }
+        else{
+            movie = this.movie_inv.searchInv(title);
+            if(movie != null){
+                status = movie.getStatus();
+            }
+        }
+        return status;
     }
 }

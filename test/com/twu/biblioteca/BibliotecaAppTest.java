@@ -184,7 +184,7 @@ public class BibliotecaAppTest {
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
         when(input_wrapper_mock.getInt()).thenReturn(2, 1, 1, this.biblioteca_app.getQuitOpt());
-
+        when(input_wrapper_mock.getString()).thenReturn("111-1111", "pass");
         biblioteca_app.openMenu();
         String expected_str = String.format(
                 biblioteca_app.menuToString() + "\n"
@@ -193,6 +193,8 @@ public class BibliotecaAppTest {
                         + "1)\t" + b1.toString() + "\n"
                         + "2)\t" + b3.toString() + "\n"
                         + "3)\tBack\n"
+                        + "Please enter your library number in the form XXX-XXXX\n"
+                        + "Please enter your password\n"
                         + "Thank you! Enjoy the book\n"
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getInvHeader()
@@ -233,6 +235,7 @@ public class BibliotecaAppTest {
 
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
         when(input_wrapper_mock.getInt()).thenReturn(5, 1, 4, this.biblioteca_app.getQuitOpt());
+        when(input_wrapper_mock.getString()).thenReturn("111-1111", "pass");
 
         biblioteca_app.openMenu();
         String expected_str = String.format(
@@ -241,6 +244,9 @@ public class BibliotecaAppTest {
                         + biblioteca_app.getMovieInvHeader()
                         + "1)\t" + m1.toString()
                         + "2)\tBack\n"
+                        + "Please enter your library number in the form XXX-XXXX\n"
+                        + "Please enter your password\n"
+                        + "Thank you! Enjoy the movie\n"
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getMovieInvHeader()
                         + biblioteca_app.menuToString() + "\n"
@@ -268,7 +274,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void trackCheckoutBookLibNum(){
+    public void testTrackCheckoutBookLibNum(){
         InputWrapper input_wrapper_mock = mock(InputWrapper.class);
 
         ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
@@ -284,7 +290,42 @@ public class BibliotecaAppTest {
         biblioteca_app.checkOutBook(1, "111-1111");
         String lib_num = biblioteca_app.getUserCheckedOut("The Name of the Wind");
         assertThat(lib_num, is("111-1111"));
+    }
 
+    @Test
+    public void testTrackCheckoutMovieLibNum(){
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+
+        when(input_wrapper_mock.getString()).thenReturn("111-1111", "pass");
+        when(input_wrapper_mock.getInt()).thenReturn(4, 1, biblioteca_app.getQuitOpt());
+
+
+
+        biblioteca_app.checkOutMovie(1, "111-1111");
+        String lib_num = biblioteca_app.getUserCheckedOut("Moonlight");
+        assertThat(lib_num, is("111-1111"));
+    }
+
+    @Test
+    public void testLoginCheckInMovie(){
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+        assertThat(biblioteca_app.getCheckedInStatus("Warrior"), is(false));
+
+        when(input_wrapper_mock.getString()).thenReturn("111-1111", "pass");
+
+        biblioteca_app.checkInMovie("Warrior");
+        assertThat(biblioteca_app.getCheckedInStatus("Warrior"), is(true));
 
     }
+
 }

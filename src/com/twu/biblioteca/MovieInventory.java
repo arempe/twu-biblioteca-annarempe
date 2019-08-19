@@ -15,6 +15,10 @@ public class MovieInventory {
         this.out = out;
         this.movie_inv = new ArrayList<Movie>();
         this.movie_inv.add(new Movie("Moonlight", 2016, "Barry Jenkins", 7));
+        Movie movie = new Movie("Warrior", 2011, "Gavin O'Connor", 9);
+        movie.setStatus(false);
+        movie.setCheckedOutBy("111-1111");
+        this.movie_inv.add(movie);
         this.num_checked_in = 1;
     }
 
@@ -84,5 +88,21 @@ public class MovieInventory {
             }
         }
         return to_return;
+    }
+
+    public boolean checkInMovie(String movie_title) {
+        boolean check_in_success = false;
+        for(Movie movie : this.movie_inv){
+            if(movie.getTitle().equals(movie_title)){
+                if(!movie.getStatus()){
+                    movie.setStatus(true);
+                    movie.setCheckedOutBy(null);
+                    this.num_checked_in++;
+                    check_in_success = true;
+                    break;
+                }
+            }
+        }
+        return check_in_success;
     }
 }

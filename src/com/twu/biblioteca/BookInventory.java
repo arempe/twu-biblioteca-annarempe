@@ -97,6 +97,8 @@ public class BookInventory {
             if(book.getTitle().equals(book_title)){
                 if(!book.getStatus()){
                     book.setStatus(true);
+                    book.setCheckedOutBy(null);
+                    this.num_checked_in++;
                     check_in_success = true;
                     break;
                 }

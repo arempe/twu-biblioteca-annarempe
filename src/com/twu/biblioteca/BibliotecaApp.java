@@ -279,7 +279,7 @@ public class BibliotecaApp {
     }
 
     protected void checkOutBook(Integer selection, String usr_lib_num) {
-        this.book_inv.checkOutBook(selection, usr_lib_num);
+        this.book_inv.checkOutItem(selection, usr_lib_num);
     }
 
     private void displayMenu(){
@@ -287,7 +287,7 @@ public class BibliotecaApp {
     }
 
     public void displayBookInv(){
-        this.book_inv.displayBookInventory();
+        this.book_inv.displayInventory();
     }
 
     private void onQuit(){
@@ -350,7 +350,7 @@ public class BibliotecaApp {
     }
 
     public String getUserCheckedOut(String title) {
-        Book book = this.book_inv.searchInv(title);
+        Item book = this.book_inv.searchInv(title);
         Movie movie;
         String lib_num = null;
         if(book != null){
@@ -366,7 +366,7 @@ public class BibliotecaApp {
     }
 
     public boolean getCheckedInStatus(String title) {
-        Book book = this.book_inv.searchInv(title);
+        Item book = this.book_inv.searchInv(title);
         Movie movie;
         boolean status = false;
 

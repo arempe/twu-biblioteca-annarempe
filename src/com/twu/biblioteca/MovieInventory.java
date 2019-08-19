@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class MovieInventory {
     private String inv_header_msg = String.format("\t%-30s\t%-5s\t%-30s\t%-3s\t\n", "Title", "Year", "Director", "Rating");
-
     private PrintStream out;
 
     private ArrayList<Movie> movie_inv;

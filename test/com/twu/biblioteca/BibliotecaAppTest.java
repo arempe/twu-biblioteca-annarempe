@@ -150,8 +150,8 @@ public class BibliotecaAppTest {
                         + biblioteca_app.getCheckInSuccessMsg()
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getInvHeader()
-                        + "1)\t" + b1.toString()
-                        + "\n2)\t" + b2.toString()
+                        + "1)\t" +  b2.toString()
+                        + "\n2)\t" + b1.toString()
                         + "\n3)\t" + b3.toString() + "\n"
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getQuitMsg()

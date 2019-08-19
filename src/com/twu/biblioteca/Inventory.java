@@ -81,24 +81,27 @@ public class Inventory {
         printCheckedInItems();
     }
 
-    public void checkOutItem(int selection, String usr_lib_num){
-        //selection based off of list of books which only displays available books
+    public boolean checkOutItem(int selection, String usr_lib_num){
+        //selection based off of list of items printed which only displays available books
         int ind = selectionToInd(selection);
+        boolean success = false;
         Item to_check_out = this.inventory.get(ind);
         if(to_check_out.getStatus()) {
             to_check_out.setStatus(false);
             to_check_out.setCheckedOutBy(usr_lib_num);
+            success = true;
             this.num_checked_in--;
         }
         else{
             this.out.println("Item is not available");
         }
+        return success;
     }
 
-    public boolean checkInBook(String book_title) {
+    public boolean checkInItem(String title) {
         boolean check_in_success = false;
         for(Item item : this.inventory){
-            if(item.getTitle().equals(book_title)){
+            if(item.getTitle().equals(title)){
                 if(!item.getStatus()){
                     item.setStatus(true);
                     item.setCheckedOutBy(null);
@@ -110,5 +113,7 @@ public class Inventory {
         }
         return check_in_success;
     }
+
+
 
 }

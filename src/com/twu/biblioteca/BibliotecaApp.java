@@ -168,12 +168,12 @@ public class BibliotecaApp {
     }
 
     protected boolean checkInMovie(String movie_title) {
-        return(this.movie_inv.checkInMovie(movie_title));
+        return(this.movie_inv.checkInItem(movie_title));
     }
 
 
     private void displayMovieInventory() {
-        this.movie_inv.displayMovieInventory();
+        this.movie_inv.displayInventory();
     }
 
     private void checkInBook() {
@@ -198,7 +198,7 @@ public class BibliotecaApp {
     }
 
     public boolean checkInBook(String book_title) {
-        return(this.book_inv.checkInBook(book_title));
+        return(this.book_inv.checkInItem(book_title));
 
     }
     
@@ -227,7 +227,7 @@ public class BibliotecaApp {
         }
 
         if(this.logged_in){
-            if(this.movie_inv.checkOutMovie(selection, lib_num));
+            if(this.movie_inv.checkOutItem(selection, lib_num));
             {
                 this.out.println("Thank you! Enjoy the movie");
             }
@@ -325,7 +325,7 @@ public class BibliotecaApp {
     }
 
     public String getMovieInvHeader() {
-        return this.movie_inv.getInvHeader();
+        return this.movie_inv.getInvHeaderMsg();
     }
 
     public String getCheckInMovieHeader() {
@@ -351,7 +351,7 @@ public class BibliotecaApp {
 
     public String getUserCheckedOut(String title) {
         Item book = this.book_inv.searchInv(title);
-        Movie movie;
+        Item movie;
         String lib_num = null;
         if(book != null){
             lib_num = book.getCheckedOutBy();
@@ -367,7 +367,7 @@ public class BibliotecaApp {
 
     public boolean getCheckedInStatus(String title) {
         Item book = this.book_inv.searchInv(title);
-        Movie movie;
+        Item movie;
         boolean status = false;
 
         if(book != null){

@@ -227,7 +227,7 @@ public class BibliotecaAppTest {
         String expected_str = String.format(
                 biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getMovieInvHeader()
-                        + "1)\t" + m1.toString()
+                        + "1)\t" + m1.toString() + "\n"
                         + biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getQuitMsg()
         );
@@ -250,7 +250,7 @@ public class BibliotecaAppTest {
                 biblioteca_app.menuToString() + "\n"
                         + biblioteca_app.getCheckInMovieHeader()
                         + biblioteca_app.getMovieInvHeader()
-                        + "1)\t" + m1.toString()
+                        + "1)\t" + m1.toString() + "\n"
                         + "2)\tBack\n"
                         + "Please enter your library number in the form XXX-XXXX\n"
                         + "Please enter your password\n"

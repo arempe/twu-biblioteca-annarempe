@@ -24,10 +24,10 @@ public class Movie extends Item{
         String to_return = String.format("%-30s\t%-5d\t%-30s\t",
                 this.title, this.yr, this.director);
         if(this.rating == -1){
-            to_return += "NA\n";
+            to_return += "NA";
         }
         else {
-            to_return += String.format("%-3d\n", this.rating);
+            to_return += String.format("%-3d", this.rating);
         }
         return to_return;
     }

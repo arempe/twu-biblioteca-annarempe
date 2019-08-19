@@ -64,6 +64,7 @@ public class BibliotecaApp {
         this.menu_opt.add("Check-in book");
         this.menu_opt.add("List of movies");
         this.menu_opt.add("Checkout movie");
+        this.menu_opt.add("Check-in movie");
         this.menu_opt.add("Quit");
         this.quit_opt = this.menu_opt.size();
     }
@@ -134,7 +135,16 @@ public class BibliotecaApp {
     private void checkInMovie() {
         this.out.print(this.movie_check_in_header_msg);
         String movie_title = this.in_wrap.getString();
-        boolean success = checkInMovie(movie_title);
+        boolean success = false;
+
+        if(!this.logged_in){
+            promptLogin();
+        }
+
+        if(logged_in) {
+            success = checkInMovie(movie_title);
+        }
+
         if(success){
             this.out.print(this.check_in_success_msg);
         }
@@ -156,7 +166,16 @@ public class BibliotecaApp {
     private void checkInBook() {
         this.out.print(this.book_check_in_header_msg);
         String book_title = this.in_wrap.getString();
-        boolean success = checkInBook(book_title);
+        boolean success = false;
+
+        if(!this.logged_in){
+            promptLogin();
+        }
+
+        if(this.logged_in){
+            success = checkInBook(book_title);
+        }
+
         if(success){
             this.out.print(this.check_in_success_msg);
         }

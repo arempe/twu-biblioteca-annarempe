@@ -1,54 +1,34 @@
 package com.twu.biblioteca;
 
-import javax.print.MultiDocPrintService;
-
-public class Movie {
-    private String title;
+public class Movie extends Item{
     private int yr;
     private String director;
     private int rating;
-    private boolean status;
-    private String checked_out_by;
 
     public Movie(String title, int yr, String director, int rating) {
+        super(title);
         this.title = title;
         this.yr = yr;
         this.director = director;
         this.rating = rating;
-        this.status = true;
-        this.checked_out_by = null;
     }
 
     public Movie(String title, int yr, String director) {
-        this.title = title;
+        super(title);
         this.yr = yr;
         this.director = director;
         this.rating = -1;
-        this.checked_out_by = null;
     }
 
     public String toString(){
-        return String.format("%-30s\t%-5d\t%-30s\t%-3d\t\n",
-                this.title, this.yr, this.director, this.rating);
-    }
-
-    public boolean getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(boolean status){
-        this.status = status;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getCheckedOutBy() {
-        return this.checked_out_by;
-    }
-
-    public void setCheckedOutBy(String usr_lib_num) {
-        this.checked_out_by = usr_lib_num;
+        String to_return = String.format("%-30s\t%-5d\t%-30s\t",
+                this.title, this.yr, this.director);
+        if(this.rating == -1){
+            to_return += "NA\n";
+        }
+        else {
+            to_return += String.format("%-3d\n", this.rating);
+        }
+        return to_return;
     }
 }

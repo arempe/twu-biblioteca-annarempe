@@ -9,9 +9,6 @@ public class Book extends Item {
         this.author = author;
         this.pub_year = pub_year;
     }
-
-
-
     public String toString(){
         return String.format("%-20s\t%-20s\t%-5d",
         this.title, this.author, this.pub_year);

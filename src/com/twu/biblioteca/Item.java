@@ -30,5 +30,4 @@ public class Item {
     protected void setCheckedOutBy(String usr_lib_num) {
         this.checked_out_by = usr_lib_num;
     }
-
 }

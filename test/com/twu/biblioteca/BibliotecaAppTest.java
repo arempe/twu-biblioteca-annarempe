@@ -248,4 +248,43 @@ public class BibliotecaAppTest {
         );
         assertThat(output_stream.toString(), is(expected_str));
     }
-}    
+
+    @Test
+    public void testLoginSuccess(){
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        when(input_wrapper_mock.getString()).thenReturn("111-1111", "pass");
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+        assertThat(biblioteca_app.getLoginStatus(), is(false));
+
+        biblioteca_app.promptLogin();
+
+        assertThat(biblioteca_app.getLoginStatus(), is(true));
+
+
+    }
+
+    @Test
+    public void trackCheckoutBookLibNum(){
+        InputWrapper input_wrapper_mock = mock(InputWrapper.class);
+
+        ByteArrayOutputStream output_stream = new ByteArrayOutputStream();
+        PrintStream print_stream = new PrintStream(output_stream);
+
+        biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
+
+        when(input_wrapper_mock.getString()).thenReturn("111-1111", "pass");
+        when(input_wrapper_mock.getInt()).thenReturn(2, 1, biblioteca_app.getQuitOpt());
+
+
+
+
+        String lib_num = biblioteca_app.getUserCheckedOut("The Name of the Wind");
+        assertThat(lib_num, is("111-1111"));
+
+
+    }
+}

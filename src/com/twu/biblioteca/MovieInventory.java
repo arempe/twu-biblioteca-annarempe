@@ -74,4 +74,14 @@ public class MovieInventory {
         }
         return success;
     }
+
+    public Movie searchInv(String title) {
+        Movie to_return = null;
+        for(Movie movie : this.movie_inv){
+            if(movie.getTitle().equals(title)){
+                to_return = movie;
+            }
+        }
+        return to_return;
+    }
 }

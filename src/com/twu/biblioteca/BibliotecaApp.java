@@ -14,6 +14,11 @@ public class BibliotecaApp {
     private PrintStream out;
     private InputWrapper in_wrap;
 
+    private Accounts accounts;
+    private boolean logged_in;
+
+    private String current_lib_num;
+
     // msgs
     private String invalid_option_msg = "Please select a valid option!\n";
     private String quit_msg = "Thank you for using BibliotecaApp!\n";
@@ -22,15 +27,24 @@ public class BibliotecaApp {
     private String check_in_success_msg = "Thank you for returning the book\n";
     private String check_in_failure_msg = "That is not a valid book to return\n";
     private String movie_check_out_header_msg = "Please select the number next to the movie you want to checkout\n";
+    private String lib_num_prompt = "Please enter your library number in the form XXX-XXXX\n";
+    private String pass_prompt = "Please enter your password\n";
+    private String invalid_login_prompt = "Sorry, incorrect login information\n";
 
 
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
         this.in_wrap = in_wrap;
+        this.logged_in = false;
+        setupAccounts();
         setupMenu();
         setupBookInv();
         setupMovieInv();
 
+    }
+
+    private void setupAccounts() {
+        this.accounts = new Accounts();
     }
 
 
@@ -94,7 +108,6 @@ public class BibliotecaApp {
             }
             else if(selection == 2){
                 checkOutBook();
-
             }
             else if(selection == 3){
                 checkInBook();
@@ -155,10 +168,22 @@ public class BibliotecaApp {
     }
 
     private void checkOutMovie(int selection) {
-        this.movie_inv.checkOutMovie(selection);
+        if(!this.logged_in){
+            promptLogin();
+        }
+
+        if(this.logged_in){
+            if(this.movie_inv.checkOutMovie(selection));
+            {
+                this.out.println("Thank you! Enjoy the book");
+            }
+        }
+        else{
+            this.out.print(this.invalid_login_prompt);
+        }
     }
 
-    private void checkOutBook() {
+    protected String checkOutBook() {
         this.out.print(this.check_out_header_msg);
         displayBookInv();
         this.out.printf("%d)\tBack\n", this.book_inv.getNumCheckedIn() + 1);
@@ -172,9 +197,29 @@ public class BibliotecaApp {
             this.out.println("Sorry, that book is not available");
         }
         else{
-            checkOutBook(selection);
-            this.out.println("Thank you! Enjoy the book");
+
+            if(!this.logged_in){
+                promptLogin();
+            }
+
+            if(this.logged_in){
+                checkOutBook(selection);
+                this.out.println("Thank you! Enjoy the book");
+            }
+            else{
+                this.out.print(this.invalid_login_prompt);
+            }
         }
+        return this.current_lib_num;
+    }
+
+    boolean promptLogin() {
+        this.out.print(this.lib_num_prompt);
+        String libnum = this.in_wrap.getString().trim();
+        this.out.print(this.pass_prompt);
+        String password = this.in_wrap.getString().trim();
+        this.logged_in = this.accounts.login(libnum, password);
+        return logged_in;
     }
 
     protected void checkOutBook(Integer selection) {
@@ -229,5 +274,29 @@ public class BibliotecaApp {
 
     public String getCheckInMovieHeader() {
         return this.movie_check_out_header_msg;
+    }
+
+    public boolean getLoginStatus() {
+        return this.logged_in;
+    }
+
+    public String getCheckedInUsr() {
+        return this.current_lib_num;
+    }
+
+    public String getUserCheckedOut(String Title) {
+        Book book = this.book_inv.searchInv(Title);
+        Movie movie;
+        String lib_num = null;
+        if(book != null){
+            lib_num = book.getCheckedOutBy();
+        }
+        else{
+            movie = this.movie_inv.searchInv(Title);
+                if(movie != null){
+                    lib_num = movie.getCheckedOutBy();
+                }
+            }
+        return lib_num;
     }
 }

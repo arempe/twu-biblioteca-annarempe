@@ -103,4 +103,14 @@ public class BookInventory {
         }
         return check_in_success;
     }
+
+    public Book searchInv(String title) {
+        Book to_return = null;
+        for(Book book : this.book_inv){
+            if(book.getTitle().equals(title)){
+                to_return = book;
+            }
+        }
+        return to_return;
+    }
 }

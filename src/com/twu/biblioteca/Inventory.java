@@ -113,7 +113,4 @@ public class Inventory {
         }
         return check_in_success;
     }
-
-
-
 }

@@ -329,9 +329,10 @@ public class BibliotecaAppTest {
         biblioteca_app = new BibliotecaApp(print_stream, input_wrapper_mock);
         assertThat(biblioteca_app.getCheckedInStatus("Warrior"), is(false));
 
-        when(input_wrapper_mock.getString()).thenReturn("111-1111", "pass");
+        when(input_wrapper_mock.getString()).thenReturn("Warrior","111-1111", "pass");
 
-        biblioteca_app.checkInMovie("Warrior");
+        biblioteca_app.checkInItem("Movie");
+
         assertThat(biblioteca_app.getCheckedInStatus("Warrior"), is(true));
 
     }

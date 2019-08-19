@@ -23,31 +23,23 @@ public class BibliotecaApp {
     private String invalid_option_msg = "Please select a valid option!\n";
     private String quit_msg = "Thank you for using BibliotecaApp!\n";
     private String check_out_header_msg = "Please select the number next to the book you want to checkout\n";
-    private String book_check_in_header_msg = "Please enter the title of the book you are checking in\n";
-    private String movie_check_in_header_msg = "Please enter the title of the movie you are checking in\n";
     private String check_in_success_msg = "Thank you for returning this item\n";
     private String check_in_failure_msg = "That is not a valid item to return\n";
     private String movie_check_out_header_msg = "Please select the number next to the movie you want to checkout\n";
     private String lib_num_prompt = "Please enter your library number in the form XXX-XXXX\n";
     private String pass_prompt = "Please enter your password\n";
     private String invalid_login_prompt = "Sorry, incorrect login information\n";
-
+    private String check_in_header = "Please enter the title of the item you are checking in\n";
 
     protected BibliotecaApp(PrintStream out, InputWrapper in_wrap){
         this.out = out;
         this.in_wrap = in_wrap;
         this.logged_in = false;
-        setupAccounts();
-        setupMenu();
-        setupBookInv();
-        setupMovieInv();
-
-    }
-
-    private void setupAccounts() {
         this.accounts = new Accounts();
+        this.book_inv = new BookInventory(this.out);
+        this.movie_inv = new MovieInventory(this.out);
+        setupMenu();
     }
-
 
     public static void main(String[] args) {
         PrintStream out = new PrintStream(System.out);
@@ -65,11 +57,10 @@ public class BibliotecaApp {
         this.menu_opt.add("List of movies");
         this.menu_opt.add("Checkout movie");
         this.menu_opt.add("Check-in movie");
-        this.menu_opt.add("Display userr info");
+        this.menu_opt.add("Display user info");
         this.menu_opt.add("Quit");
         this.quit_opt = this.menu_opt.size();
     }
-
 
     public String menuToString(){
         StringBuilder to_return;
@@ -82,14 +73,6 @@ public class BibliotecaApp {
         return to_return.toString();
     }
 
-    private void setupMovieInv() {
-        this.movie_inv = new MovieInventory(this.out);
-    }
-
-    private void setupBookInv() {
-        this.book_inv = new BookInventory(this.out);
-    }
-
     private void displayWelcomeMsg(){
         this.out.println("Welcome to Biblioteca. " +
                 "You're one-stop-shop for great book titles in Bangalore!");
@@ -99,30 +82,31 @@ public class BibliotecaApp {
         displayWelcomeMsg();
     }
 
-    protected  void openMenu(){
+    protected void openMenu(){
         displayMenu();
         int selection = this.in_wrap.getInt();
         openMenu(selection);
     }
+
     protected void openMenu(int selection) {
         while(selection != this.quit_opt){
             if(selection == 1){
-                displayBookInv();
+                this.book_inv.displayInventory();
             }
             else if(selection == 2){
                 checkOutBook();
             }
             else if(selection == 3){
-                checkInBook();
+                checkInItem("Book");
             }
             else if(selection == 4){
-                displayMovieInventory();
+                this.movie_inv.displayInventory();
             }
             else if(selection == 5){
                 checkOutMovie();
             }
             else if(selection == 6){
-                checkInMovie();
+                checkInItem("Movie");
             }
             else if(selection == 7){
                 displayUsrInfo();
@@ -145,9 +129,9 @@ public class BibliotecaApp {
         }
     }
 
-    private void checkInMovie() {
-        this.out.print(this.movie_check_in_header_msg);
-        String movie_title = this.in_wrap.getString();
+    protected void checkInItem(String type) {
+        this.out.print(this.check_in_header);
+        String title = this.in_wrap.getString();
         boolean success = false;
 
         if(!this.logged_in){
@@ -155,7 +139,13 @@ public class BibliotecaApp {
         }
 
         if(logged_in) {
-            success = checkInMovie(movie_title);
+            if(type.toLowerCase().equals("movie")) {
+                success = this.movie_inv.checkInItem(title);
+            }
+            else
+            {
+                success = this.book_inv.checkInItem(title);
+            }
         }
 
         if(success){
@@ -166,46 +156,10 @@ public class BibliotecaApp {
             this.out.print(this.check_in_failure_msg);
         }
     }
-
-    protected boolean checkInMovie(String movie_title) {
-        return(this.movie_inv.checkInItem(movie_title));
-    }
-
-
-    private void displayMovieInventory() {
-        this.movie_inv.displayInventory();
-    }
-
-    private void checkInBook() {
-        this.out.print(this.book_check_in_header_msg);
-        String book_title = this.in_wrap.getString();
-        boolean success = false;
-
-        if(!this.logged_in){
-            promptLogin();
-        }
-
-        if(this.logged_in){
-            success = checkInBook(book_title);
-        }
-
-        if(success){
-            this.out.print(this.check_in_success_msg);
-        }
-        else{
-            this.out.print(this.check_in_failure_msg);
-        }
-    }
-
-    public boolean checkInBook(String book_title) {
-        return(this.book_inv.checkInItem(book_title));
-
-    }
     
-
     private void checkOutMovie() {
         this.out.print(this.movie_check_out_header_msg);
-        displayMovieInventory();
+        this.movie_inv.displayInventory();
         this.out.printf("%d)\tBack\n", this.movie_inv.getNumCheckedIn() + 1);
 
         int selection = this.in_wrap.getInt();
@@ -239,7 +193,7 @@ public class BibliotecaApp {
 
     protected void checkOutBook() {
         this.out.print(this.check_out_header_msg);
-        displayBookInv();
+        this.book_inv.displayInventory();
         this.out.printf("%d)\tBack\n", this.book_inv.getNumCheckedIn() + 1);
 
         int selection = this.in_wrap.getInt();
@@ -286,10 +240,6 @@ public class BibliotecaApp {
         this.out.println(this.menuToString());
     }
 
-    public void displayBookInv(){
-        this.book_inv.displayInventory();
-    }
-
     private void onQuit(){
         this.out.print(this.quit_msg);
     }
@@ -317,7 +267,7 @@ public class BibliotecaApp {
     }
 
     public String getCheckInMsg() {
-        return this.book_check_in_header_msg;
+        return this.check_in_header;
     }
 
     public String getCheckInFailMsg() {
@@ -342,11 +292,6 @@ public class BibliotecaApp {
 
     public boolean getLoginStatus() {
         return this.logged_in;
-    }
-
-
-    public String getCheckedInUsr() {
-        return this.current_lib_num;
     }
 
     public String getUserCheckedOut(String title) {
